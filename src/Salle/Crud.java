@@ -2,19 +2,34 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package Salle;
+package main.java.tpinf3055.mavenproject2.Salle;
+ 
+import java.util.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
+ 
 /**
  *
  * @author sudo_dev
  */
 public class Crud extends javax.swing.JFrame {
 
+      Connection con1;
+      PreparedStatement insert;
     /**
      * Creates new form Crud
      */
     public Crud() {
         initComponents();
+         updateSalle();
+       
     }
 
     /**
@@ -95,7 +110,7 @@ public class Crud extends javax.swing.JFrame {
 
         editButton.setFont(new java.awt.Font("Liberation Sans", 1, 15)); // NOI18N
         editButton.setText("Modifier");
-        editButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        editButton.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         editButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editButtonActionPerformed(evt);
@@ -105,7 +120,7 @@ public class Crud extends javax.swing.JFrame {
         deleteButton.setFont(new java.awt.Font("Liberation Sans", 1, 15)); // NOI18N
         deleteButton.setForeground(new java.awt.Color(255, 0, 0));
         deleteButton.setText("Supprimer");
-        deleteButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        deleteButton.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         deleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteButtonActionPerformed(evt);
@@ -160,14 +175,14 @@ public class Crud extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id", "nom", "effectif"
+                "nom", "effectif"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -178,7 +193,14 @@ public class Crud extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setColumnSelectionAllowed(true);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
+        jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -227,17 +249,156 @@ public class Crud extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_numberOfPlaceOfClassroomActionPerformed
 
+    private void updateSalle()
+    {
+         int bound;
+        
+        try
+        {
+                /*Recuperation des donnees sqisies par le user et stockage en BD*/
+           Class.forName("com.mysql.cj.jdbc.Driver");
+           con1= DriverManager.getConnection("jdbc:mysql://localhost:3306/TT_MANAGEMENT","root",""); 
+           insert = con1.prepareStatement("select * from Salle");
+           ResultSet rs = insert.executeQuery();
+           ResultSetMetaData Res = rs.getMetaData();
+           bound = Res.getColumnCount();
+           DefaultTableModel Df =(DefaultTableModel)jTable1.getModel();
+           Df.setRowCount(0);
+           
+           while(rs.next())
+           {
+            Vector v2 = new Vector();
+            
+            for (int i=1; i<=bound ; i++)
+            {
+              //v2.add(rs.getString("id"));
+              v2.add(rs.getString("nom_salle"));
+              v2.add(rs.getString("effectif"));
+            }
+            
+            Df.addRow(v2);
+            
+           }
+            
+        } 
+        catch (SQLException ex)
+          {
+            Logger.getLogger(Crud.class.getName()).log(Level.SEVERE, null, ex);
+          } 
+        catch (ClassNotFoundException ex) 
+           {
+              Logger.getLogger(Crud.class.getName()).log(Level.SEVERE, null, ex);
+           }
+        
+        
+        
+    }
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        // TODO add your handling code here:
+
+        
+        String nom = nameOfClassroom.getText();
+        String place = numberOfPlaceOfClassroom.getText();
+          try {
+              // TODO add your handling code here:
+              Class.forName("com.mysql.cj.jdbc.Driver");
+              con1= DriverManager.getConnection("jdbc:mysql://localhost/tt_management","root","");
+              insert =  con1.prepareStatement("insert  into salle (nom_Salle, effectif) values( ?, ?)");
+              insert.setString(1,nom);
+              insert.setString(2,place);
+              insert.executeUpdate();
+              JOptionPane.showMessageDialog(this,"CREATION EFFECTUEE AVEC SUCCESS");
+               updateSalle();
+              nameOfClassroom.setText("");
+              numberOfPlaceOfClassroom.setText("");
+              nameOfClassroom.requestFocus();
+              
+              
+          } catch (ClassNotFoundException ex) {
+              Logger.getLogger(Crud.class.getName()).log(Level.SEVERE, null, ex);
+          } catch (SQLException ex) {
+              Logger.getLogger(Crud.class.getName()).log(Level.SEVERE, null, ex);
+          }
+          
+            
+           
+      
+       
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         // TODO add your handling code here:
+        DefaultTableModel Df = (DefaultTableModel)jTable1.getModel();
+        int selector = jTable1.getSelectedRow();
+        
+            try {
+              // TODO add your handling code here:
+              String nom = nameOfClassroom.getText();
+              String  place = numberOfPlaceOfClassroom.getText();
+              String ident = (String) Df.getValueAt(selector, 0);
+              Class.forName("com.mysql.cj.jdbc.Driver");
+              con1= DriverManager.getConnection("jdbc:mysql://localhost/tt_management","root","");
+              insert =  con1.prepareStatement("update Salle set nom_salle = ?, effectif =? where nom_salle =?");
+              insert.setString(1,nom);
+              insert.setString(2,place);
+              insert.setString(3, ident);
+              insert.executeUpdate();
+              JOptionPane.showMessageDialog(this,"MODIFICATION EFFECTUEE");
+              updateSalle();
+              nameOfClassroom.setText("");
+              numberOfPlaceOfClassroom.setText("");
+              nameOfClassroom.requestFocus();
+              
+              
+              
+          } catch (ClassNotFoundException ex) {
+              Logger.getLogger(Crud.class.getName()).log(Level.SEVERE, null, ex);
+          } catch (SQLException ex) {
+              Logger.getLogger(Crud.class.getName()).log(Level.SEVERE, null, ex);
+          }
+        
+        
+        
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         // TODO add your handling code here:
+        DefaultTableModel Df = (DefaultTableModel) jTable1.getModel();
+        int selected = jTable1.getSelectedRow();
+            try 
+            {
+              // TODO add your handling code here:
+              
+            String ident = (String) Df.getValueAt(selected, 0);
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con1= DriverManager.getConnection("jdbc:mysql://localhost/tt_management","root","");
+            insert =  con1.prepareStatement("delete from Salle where nom_salle =?");
+            insert.setString(1,ident);
+            insert.executeUpdate();
+            JOptionPane.showMessageDialog(this,"SUPPRESSION REUSSIE");
+            updateSalle();
+            nameOfClassroom.setText("");
+            numberOfPlaceOfClassroom.setText("");
+            nameOfClassroom.requestFocus();
+              
+              
+            } 
+            catch (ClassNotFoundException ex) {
+              Logger.getLogger(Crud.class.getName()).log(Level.SEVERE, null, ex);
+          } catch (SQLException ex) {
+              Logger.getLogger(Crud.class.getName()).log(Level.SEVERE, null, ex);
+          }
+        
+        
     }//GEN-LAST:event_deleteButtonActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+        DefaultTableModel Df = (DefaultTableModel)jTable1.getModel();
+        int selected = jTable1.getSelectedRow();
+        nameOfClassroom.setText(Df.getValueAt(selected, 0).toString());
+        numberOfPlaceOfClassroom.setText(Df.getValueAt(selected, 1).toString());
+     
+    }//GEN-LAST:event_jTable1MouseClicked
 
     /**
      * @param args the command line arguments

@@ -4,6 +4,12 @@
  */
 package Section;
 
+import java.sql.*;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author sudo_dev
@@ -15,6 +21,9 @@ public class Crud extends javax.swing.JFrame {
      */
     public Crud() {
         initComponents();
+        table_update();
+        updateTimetableCombo();
+        updateDayCombo();
     }
 
     /**
@@ -37,24 +46,30 @@ public class Crud extends javax.swing.JFrame {
         addButton = new javax.swing.JButton();
         editButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
-        jLabel10 = new javax.swing.JLabel();
         reserverName = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        stateOfSection = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
-        day = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
-        timetable = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
-        ue1 = new javax.swing.JTextField();
-        reserverName1 = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        numberStudents = new javax.swing.JTextField();
+        ue = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        cycle = new javax.swing.JComboBox<>();
+        level = new javax.swing.JComboBox<>();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        option = new javax.swing.JTextField();
+        stateOfSection = new javax.swing.JComboBox<>();
+        timetable = new javax.swing.JComboBox<>();
+        day = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        TTcombo = new javax.swing.JComboBox<>();
+        jourcombo = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -73,14 +88,14 @@ public class Crud extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(156, 156, 156))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(11, Short.MAX_VALUE))
         );
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Ajouter une section", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Liberation Sans", 1, 17))); // NOI18N
@@ -128,8 +143,6 @@ public class Crud extends javax.swing.JFrame {
             }
         });
 
-        jLabel10.setText("Nom du proffesseur :");
-
         reserverName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 reserverNameActionPerformed(evt);
@@ -140,41 +153,43 @@ public class Crud extends javax.swing.JFrame {
 
         jLabel12.setText("Etat :");
 
-        stateOfSection.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stateOfSectionActionPerformed(evt);
-            }
-        });
+        jLabel13.setText("Jour :");
 
-        jLabel13.setText("Id Jour :");
-
-        day.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dayActionPerformed(evt);
-            }
-        });
-
-        jLabel14.setText("Id Emplois de temps :");
-
-        timetable.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                timetableActionPerformed(evt);
-            }
-        });
+        jLabel14.setText("Emplois de temps :");
 
         jLabel15.setText("Nombre étudiant :");
 
-        ue1.addActionListener(new java.awt.event.ActionListener() {
+        numberStudents.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ue1ActionPerformed(evt);
+                numberStudentsActionPerformed(evt);
             }
         });
 
-        reserverName1.addActionListener(new java.awt.event.ActionListener() {
+        ue.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                reserverName1ActionPerformed(evt);
+                ueActionPerformed(evt);
             }
         });
+
+        jLabel2.setText("Nom du professeur :");
+
+        jLabel3.setText("Cycle :");
+
+        cycle.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Licence", "Master", "Doctorat" }));
+
+        level.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "L1", "L2", "L3", "M1", "M2", "D" }));
+
+        jLabel6.setText("Niveau :");
+
+        jLabel7.setText("Option :");
+
+        option.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                optionActionPerformed(evt);
+            }
+        });
+
+        stateOfSection.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "libre", "occupé" }));
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -184,83 +199,105 @@ public class Crud extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel15)
-                        .addGap(74, 74, 74)
-                        .addComponent(ue1))
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(25, 25, 25))
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(19, 19, 19)))
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(startTime)
+                            .addComponent(endTime)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(ue, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(reserverName, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel13)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(day, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel5Layout.createSequentialGroup()
-                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel8)
-                                .addComponent(jLabel9)
-                                .addComponent(jLabel10)
-                                .addComponent(jLabel11)
-                                .addComponent(jLabel12))
-                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel5Layout.createSequentialGroup()
-                                    .addGap(52, 52, 52)
-                                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(endTime, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
-                                        .addComponent(startTime)
-                                        .addComponent(reserverName, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(stateOfSection)))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(reserverName1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGroup(jPanel5Layout.createSequentialGroup()
-                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel14))
-                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel5Layout.createSequentialGroup()
-                                    .addGap(48, 48, 48)
-                                    .addComponent(timetable, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel5Layout.createSequentialGroup()
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(30, 30, 30)
-                                    .addComponent(deleteButton))))))
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel6))
+                        .addGap(25, 25, 25)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(numberStudents)
+                            .addComponent(cycle, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(level, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(19, 19, 19)
+                        .addComponent(stateOfSection, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26)
+                        .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33)
+                        .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(23, 23, 23)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(timetable, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(option)
+                            .addComponent(day, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(stateOfSection, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(startTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8))
+                    .addComponent(jLabel12)
+                    .addComponent(stateOfSection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(startTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(endTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(reserverName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(endTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(21, 21, 21)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(reserverName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
-                    .addComponent(reserverName1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ue1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(numberStudents, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel15))
-                .addGap(27, 27, 27)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(cycle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(level, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(option, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
                     .addComponent(day, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
+                .addGap(24, 24, 24)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(timetable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel14))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                    .addComponent(jLabel14)
+                    .addComponent(timetable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -273,14 +310,14 @@ public class Crud extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id", "Etat", "Début", "Fin", "Nom proffesseur", "UE", "Nombre étudiant", "Id jour", "Id emplois de temps"
+                "Id", "Etat", "Début", "Fin", "Nom proffesseur", "UE", "Nombre étudiant", "cycle", "niveau", "specialite", "jour", "emplois de temps"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -292,16 +329,20 @@ public class Crud extends javax.swing.JFrame {
             }
         });
         jTable1.setShowGrid(true);
-        jTable1.setShowHorizontalLines(true);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        TTcombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "----" }));
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jourcombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "----" }));
 
-        jLabel2.setText("Jour :");
+        jLabel4.setText("Emplois de temps :");
 
-        jLabel3.setText("Emplois de temps :");
+        jLabel5.setText("Jour : ");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -313,95 +354,370 @@ public class Crud extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 723, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(10, 10, 10)
+                        .addComponent(jScrollPane1)
+                        .addGap(6, 6, 6))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addComponent(jLabel3)
-                        .addGap(40, 40, 40)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(113, 113, 113)
-                        .addComponent(jLabel2)
-                        .addGap(38, 38, 38)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(59, 59, 59)
+                        .addComponent(jLabel4)
+                        .addGap(27, 27, 27)
+                        .addComponent(TTcombo, 0, 230, Short.MAX_VALUE)
+                        .addGap(136, 136, 136)
+                        .addComponent(jLabel5)
+                        .addGap(18, 18, 18)
+                        .addComponent(jourcombo, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(312, 312, 312)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(TTcombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jourcombo)
+                        .addComponent(jLabel5)))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
+                        .addContainerGap())
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void startTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startTimeActionPerformed
+    
+    Connection conn;
+    PreparedStatement insert;
+        
+    private void ueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ueActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_startTimeActionPerformed
+    }//GEN-LAST:event_ueActionPerformed
 
-    private void endTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endTimeActionPerformed
+    private void numberStudentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numberStudentsActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_endTimeActionPerformed
-
-    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_addButtonActionPerformed
-
-    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editButtonActionPerformed
-
-    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_deleteButtonActionPerformed
+    }//GEN-LAST:event_numberStudentsActionPerformed
 
     private void reserverNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reserverNameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_reserverNameActionPerformed
 
-    private void stateOfSectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stateOfSectionActionPerformed
+    /**
+     * Methode de suppréssion d'une section
+     * @param evt 
+     */
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_stateOfSectionActionPerformed
+        DefaultTableModel Df = (DefaultTableModel)jTable1.getModel();
+        int selectedIndex = jTable1.getSelectedRow();
+        
+        try {
+            int id = Integer.parseInt(Df.getValueAt(selectedIndex, 0).toString());
+            int dialogResult = JOptionPane.showConfirmDialog(null,"Do you want to delete the record ? ","Warning",JOptionPane.YES_NO_OPTION);
+            
+            if (dialogResult == JOptionPane.YES_OPTION) {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/TT_MANAGEMENT", "root", "");
+                insert = conn.prepareStatement("DELETE FROM Section WHERE id_section=?");
+                insert.setInt(1, id);
 
-    private void dayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dayActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_dayActionPerformed
+                insert.executeUpdate();
 
-    private void timetableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timetableActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_timetableActionPerformed
+                stateOfSection.setSelectedIndex(0);
+                startTime.setText("");
+                endTime.setText("");
+                reserverName.setText("");
+                ue.setText("");
+                numberStudents.setText("");
+                cycle.setSelectedItem(0);
+                level.setSelectedItem(0);
+                option.setText("");
+                day.setSelectedIndex(0);
+                timetable.setSelectedIndex(0);
+            
+                table_update();
+                
+                JOptionPane.showMessageDialog(this, "Section deleted");
 
-    private void ue1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ue1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ue1ActionPerformed
+            }
+            
+            
+            
+            
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Crud.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_deleteButtonActionPerformed
 
-    private void reserverName1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reserverName1ActionPerformed
+    /**
+     * Methode de mise à jour d'une section
+     * @param evt 
+     */
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_reserverName1ActionPerformed
+        DefaultTableModel Df = (DefaultTableModel)jTable1.getModel();
+        int selectedIndex = jTable1.getSelectedRow();
+        
+         try {
+            int id = Integer.parseInt(Df.getValueAt(selectedIndex, 0).toString());
+            String state = (String) stateOfSection.getSelectedItem();
+            String start = startTime.getText();
+            String end = endTime.getText();
+            String reserver = reserverName.getText();
+            String study = ue.getText();
+            int numberStds = Integer.parseInt(numberStudents.getText());
+            String cycl = (String) cycle.getSelectedItem();
+            String lvl = (String) level.getSelectedItem();
+            String opt = (String) option.getText();
+            String idDay_temp = (String) day.getSelectedItem();
+            String[] idDay = idDay_temp.split(" ");
+            String idTT_temps = (String) timetable.getSelectedItem();
+            String[] idTT = idTT_temps.split(" ");
+            int idTeacher = 1;
+        
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/TT_MANAGEMENT", "root", "");
+            insert = conn.prepareStatement("UPDATE Section SET nom_proffesseur_occupant=?, ue=?, etat=?, debut=?, fin=?, cycle=?, niveau=?, specialite=?, nombre_etudiants=?, id_jour=?, id_emplois_de_temps=?, id_enseignant=? WHERE id_section=?");
+            insert.setString(1, reserver);
+            insert.setString(2, study);
+            insert.setString(3, state);
+            insert.setString(4, start);
+            insert.setString(5, end);
+            insert.setString(6, cycl);
+            insert.setString(7, lvl);
+            insert.setString(8, opt);
+            insert.setInt(9, numberStds);
+            insert.setString(10, idDay[0]);
+            insert.setString(11, idTT[0]);
+            insert.setInt(12, idTeacher);
+            insert.setInt(13, id);
+            
+            insert.executeUpdate();
+            
+            stateOfSection.setSelectedIndex(0);
+            startTime.setText("");
+            endTime.setText("");
+            reserverName.setText("");
+            ue.setText("");
+            numberStudents.setText("");
+            cycle.setSelectedItem(0);
+            level.setSelectedItem(0);
+            option.setText("");
+            day.setSelectedIndex(0);
+            timetable.setSelectedIndex(0);
+            table_update();
+            
+            JOptionPane.showMessageDialog(this, "Section updated");
+            
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Crud.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+    }//GEN-LAST:event_editButtonActionPerformed
+
+    private void table_update() {
+        int c;
+        
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/TT_MANAGEMENT", "root", "");
+            insert = conn.prepareStatement("SELECT * FROM Section");
+            ResultSet rs = insert.executeQuery();
+            ResultSetMetaData rss = rs.getMetaData();
+            c = rss.getColumnCount();
+            
+            DefaultTableModel Df = (DefaultTableModel)jTable1.getModel();
+            
+            Df.setRowCount(0);
+            
+            while(rs.next()) {
+                Vector v2 = new Vector();
+                
+                for (int a=1;a<=c;a++) {
+                    v2.add(rs.getString("id_section"));
+                    v2.add(rs.getString("etat"));
+                    v2.add(rs.getString("debut"));
+                    v2.add(rs.getString("fin"));
+                    v2.add(rs.getString("nom_proffesseur_occupant"));
+                    v2.add(rs.getString("ue"));
+                    v2.add(rs.getString("nombre_etudiants"));
+                    v2.add(rs.getString("cycle"));
+                    v2.add(rs.getString("niveau"));
+                    v2.add(rs.getString("specialite"));
+                    v2.add(rs.getString("id_jour"));
+                    v2.add(rs.getString("id_emplois_de_temps"));
+                    
+                    
+                }
+                
+                Df.addRow(v2);
+            }
+            
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Crud.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    /**
+     * Méthode de création de section
+     * @param evt 
+     */
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
+        // TODO add your handling code here:
+        String state = (String) stateOfSection.getSelectedItem();
+        String start = startTime.getText();
+        String end = endTime.getText();
+        String reserver = reserverName.getText();
+        String study = ue.getText();
+        int numberStds = Integer.parseInt(numberStudents.getText());
+        String cycl = (String) cycle.getSelectedItem();
+        String lvl = (String) level.getSelectedItem();
+        String opt = (String) option.getText();
+        String idDay_temp = (String) day.getSelectedItem();
+        String[] idDay = idDay_temp.split(" ");
+        String idTT_temps = (String) timetable.getSelectedItem();
+        String[] idTT = idTT_temps.split(" ");
+        int idTeacher = 1;
+        
+        
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/TT_MANAGEMENT", "root", "");
+            insert = conn.prepareStatement("INSERT into Section(nom_proffesseur_occupant,ue,etat,debut,fin,cycle,niveau,specialite,nombre_etudiants,id_jour,id_emplois_de_temps,id_enseignant) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
+            insert.setString(1, reserver);
+            insert.setString(2, study);
+            insert.setString(3, state);
+            insert.setString(4, start);
+            insert.setString(5, end);
+            insert.setString(6, cycl);
+            insert.setString(7, lvl);
+            insert.setString(8, opt);
+            insert.setInt(9, numberStds);
+            insert.setString(10, idDay[0]);
+            insert.setString(11, idTT[0]);
+            insert.setInt(12, idTeacher);
+            
+            insert.executeUpdate();
+            
+            stateOfSection.setSelectedIndex(0);
+            startTime.setText("");
+            endTime.setText("");
+            reserverName.setText("");
+            ue.setText("");
+            numberStudents.setText("");
+            cycle.setSelectedItem(0);
+            level.setSelectedItem(0);
+            option.setText("");
+            day.setSelectedIndex(0);
+            timetable.setSelectedIndex(0);
+            table_update();
+            
+            JOptionPane.showMessageDialog(this, "Section added");
+            
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Crud.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_addButtonActionPerformed
+
+    //Update combolist of timetables
+    private void updateTimetableCombo() {
+        String sql = "SELECT * FROM Emplois_de_temps";
+        
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/TT_MANAGEMENT", "root", "");
+            insert = conn.prepareStatement(sql);
+            ResultSet rs = insert.executeQuery();
+            
+            while(rs.next()) {
+                timetable.addItem(rs.getString("id_emplois_de_temps")+" - "+rs.getString("nom"));
+                TTcombo.addItem(rs.getString("id_emplois_de_temps")+" - "+rs.getString("nom"));
+            }
+            
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Crud.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    //Update combolist of day
+    private void updateDayCombo() {
+        String sql = "SELECT * FROM Jour";
+        
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/TT_MANAGEMENT", "root", "");
+            insert = conn.prepareStatement(sql);
+            ResultSet rs = insert.executeQuery();
+            
+            while(rs.next()) {
+                jourcombo.addItem(rs.getString("id_jour")+" - "+rs.getString("nom_jour"));
+                day.addItem(rs.getString("id_jour")+" - "+rs.getString("nom_jour"));
+            }
+            
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Crud.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    private void endTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endTimeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_endTimeActionPerformed
+
+    private void startTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startTimeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_startTimeActionPerformed
+
+    private void optionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_optionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_optionActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+        DefaultTableModel Df = (DefaultTableModel)jTable1.getModel();
+        
+        int selectedIndex = jTable1.getSelectedRow();
+        
+        stateOfSection.setSelectedItem((String) Df.getValueAt(selectedIndex, 1).toString());
+        startTime.setText((String) Df.getValueAt(selectedIndex, 2).toString());
+        endTime.setText((String) Df.getValueAt(selectedIndex, 3).toString());
+        reserverName.setText((String) Df.getValueAt(selectedIndex, 4).toString());
+        ue.setText((String) Df.getValueAt(selectedIndex, 5).toString());
+        numberStudents.setText((String) Df.getValueAt(selectedIndex, 6).toString());
+        cycle.setSelectedItem((String) Df.getValueAt(selectedIndex, 7).toString());
+        level.setSelectedItem((String) Df.getValueAt(selectedIndex, 8).toString());
+        option.setText((String) Df.getValueAt(selectedIndex, 9).toString());
+        day.setSelectedIndex(Integer.parseInt(Df.getValueAt(selectedIndex, 10).toString())- 1 );
+        //timetable.addItem((String) Df.getValueAt(selectedIndex, 11).toString());
+        timetable.setSelectedItem((String) Df.getValueAt(selectedIndex, 11).toString());
+        
+
+    }//GEN-LAST:event_jTable1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -439,15 +755,14 @@ public class Crud extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> TTcombo;
     private javax.swing.JButton addButton;
-    private javax.swing.JTextField day;
+    private javax.swing.JComboBox<String> cycle;
+    private javax.swing.JComboBox<String> day;
     private javax.swing.JButton deleteButton;
     private javax.swing.JButton editButton;
     private javax.swing.JTextField endTime;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
@@ -455,6 +770,10 @@ public class Crud extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
@@ -462,11 +781,14 @@ public class Crud extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JComboBox<String> jourcombo;
+    private javax.swing.JComboBox<String> level;
+    private javax.swing.JTextField numberStudents;
+    private javax.swing.JTextField option;
     private javax.swing.JTextField reserverName;
-    private javax.swing.JTextField reserverName1;
     private javax.swing.JTextField startTime;
-    private javax.swing.JTextField stateOfSection;
-    private javax.swing.JTextField timetable;
-    private javax.swing.JTextField ue1;
+    private javax.swing.JComboBox<String> stateOfSection;
+    private javax.swing.JComboBox<String> timetable;
+    private javax.swing.JTextField ue;
     // End of variables declaration//GEN-END:variables
 }

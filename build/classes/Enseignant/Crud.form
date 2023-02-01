@@ -140,12 +140,14 @@
                                       <Component id="jLabel10" max="32767" attributes="0"/>
                                       <EmptySpace min="24" pref="24" max="-2" attributes="0"/>
                                   </Group>
+                                  <Component id="jLabel11" alignment="0" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="password" pref="220" max="32767" attributes="0"/>
                                   <Component id="username" max="32767" attributes="0"/>
                                   <Component id="speciality" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="status" alignment="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -175,12 +177,17 @@
                           <Component id="password" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
                           <Component id="speciality" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="58" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
+                          <Component id="status" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="35" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="addButton" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
                           <Component id="editButton" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
@@ -264,6 +271,29 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteButtonActionPerformed"/>
               </Events>
             </Component>
+            <Component class="javax.swing.JLabel" name="jLabel11">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Statut :"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JComboBox" name="status">
+              <Properties>
+                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                  <StringArray count="3">
+                    <StringItem index="0" value="Assistant"/>
+                    <StringItem index="1" value="Docteur"/>
+                    <StringItem index="2" value="Proffesseur"/>
+                  </StringArray>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="statusActionPerformed"/>
+              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+              </AuxValues>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JScrollPane" name="jScrollPane1">
@@ -276,15 +306,21 @@
             <Component class="javax.swing.JTable" name="jTable1">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="4" rowCount="0">
-                    <Column editable="true" title="Id" type="java.lang.Object"/>
-                    <Column editable="true" title="nom" type="java.lang.Object"/>
-                    <Column editable="true" title="mot de passe" type="java.lang.Object"/>
-                    <Column editable="true" title="sp&#xe9;cialit&#xe9;" type="java.lang.Object"/>
+                  <Table columnCount="5" rowCount="0">
+                    <Column editable="false" title="Id" type="java.lang.Integer"/>
+                    <Column editable="false" title="nom" type="java.lang.String"/>
+                    <Column editable="false" title="mot de passe" type="java.lang.String"/>
+                    <Column editable="false" title="sp&#xe9;cialit&#xe9;" type="java.lang.String"/>
+                    <Column editable="false" title="statut" type="java.lang.String"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
