@@ -8,6 +8,7 @@ import Emplois_de_temps.TimetableCrud;
 import Enseignant.TeachersCrud;
 import Salle.SallesCrud;
 import Section.SectionsCrud;
+import java.util.Vector;
 import javax.swing.JOptionPane;
 
 /**
@@ -21,6 +22,13 @@ public class Home extends javax.swing.JFrame {
      */
     public Home() {
         initComponents();
+        
+    }
+    
+    public Home(Vector data){
+        initComponents();
+        this.sharedData = new Vector();
+        this.sharedData.add(data);
     }
 
     /**
@@ -229,10 +237,10 @@ public class Home extends javax.swing.JFrame {
      */
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
         // TODO add your handling code here:
-        TimetableCrud tt = new TimetableCrud();
+        TimetableCrud tt = new TimetableCrud(this.sharedData);
         tt.setVisible(true);
         
-        this.dispose();
+        //this.dispose();
     }//GEN-LAST:event_jLabel2MouseClicked
 
     /**
@@ -244,7 +252,7 @@ public class Home extends javax.swing.JFrame {
         TeachersCrud tc = new TeachersCrud();
         tc.setVisible(true);
         
-        this.dispose();
+        //this.dispose();
     }//GEN-LAST:event_jLabel3MouseClicked
 
     /**
@@ -256,7 +264,7 @@ public class Home extends javax.swing.JFrame {
         SallesCrud sc = new SallesCrud();
         sc.setVisible(true);
         
-        this.dispose();
+        //this.dispose();
     }//GEN-LAST:event_jLabel7MouseClicked
 
     /**
@@ -268,7 +276,7 @@ public class Home extends javax.swing.JFrame {
         SectionsCrud sc = new SectionsCrud();
         sc.setVisible(true);
         
-        this.dispose();
+        //this.dispose();
     }//GEN-LAST:event_jLabel8MouseClicked
 
     private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
@@ -315,6 +323,8 @@ public class Home extends javax.swing.JFrame {
         });
     }
 
+    //Variables personnelles déclarées
+    private Vector sharedData;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

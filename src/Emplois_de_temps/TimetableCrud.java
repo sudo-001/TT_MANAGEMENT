@@ -3,19 +3,53 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Emplois_de_temps;
+import java.awt.Image;
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import java.util.*;
+import javax.swing.ImageIcon;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author sudo_dev
  */
 public class TimetableCrud extends javax.swing.JFrame {
-
+ 
     /**
      * Creates new form Crud
      */
     public TimetableCrud() {
         initComponents();
+        Update_idOfClassroom();
+        update_table();
+        scaleImage();
     }
+    
+    /**
+     * Creates new form TimetableCrud width data
+     */
+    public TimetableCrud(Vector data) {
+        initComponents();
+        Update_idOfClassroom();
+        update_table();
+        scaleImage();
+        this.sharedData = data;
+        Vector admin_datas = (Vector) sharedData.get(0);
+        
+        idOfAdmin.setText(String.valueOf(admin_datas.get(0)));
+    }
+    
+    public void scaleImage() {
+        ImageIcon icon = new ImageIcon("/home/sudo_dev/Bureau/Projets_ecole/3055/TP/TT_MANAGEMENT/src/Icons/close.png");
+        Image img = icon.getImage();
+        Image imgScale = img.getScaledInstance(jLabel13.getWidth(), jLabel13.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(imgScale);
+        jLabel13.setIcon(scaledIcon);
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -28,7 +62,10 @@ public class TimetableCrud extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel13 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         nameOfTimetable = new javax.swing.JTextField();
@@ -45,29 +82,79 @@ public class TimetableCrud extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
         jPanel2.setBackground(new java.awt.Color(51, 51, 255));
 
-        jLabel1.setFont(new java.awt.Font("Liberation Sans", 1, 20)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("TT_MANAGEMENT");
+        jPanel3.setBackground(new java.awt.Color(51, 51, 255));
+
+        jLabel2.setFont(new java.awt.Font("Liberation Sans", 1, 20)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("TT_MANAGEMENT");
+
+        jPanel4.setBackground(new java.awt.Color(37, 41, 203));
+
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel13.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel13.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel13MouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(7, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(156, 156, 156))
+                .addGap(0, 0, 0)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -91,7 +178,7 @@ public class TimetableCrud extends javax.swing.JFrame {
 
         editButton.setFont(new java.awt.Font("Liberation Sans", 1, 15)); // NOI18N
         editButton.setText("Modifier");
-        editButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        editButton.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         editButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editButtonActionPerformed(evt);
@@ -101,7 +188,7 @@ public class TimetableCrud extends javax.swing.JFrame {
         deleteButton.setFont(new java.awt.Font("Liberation Sans", 1, 15)); // NOI18N
         deleteButton.setForeground(new java.awt.Color(255, 0, 0));
         deleteButton.setText("Supprimer");
-        deleteButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        deleteButton.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         deleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteButtonActionPerformed(evt);
@@ -118,7 +205,6 @@ public class TimetableCrud extends javax.swing.JFrame {
 
         jLabel11.setText("Nom de la salle : ");
 
-        idOfClassroom.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         idOfClassroom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 idOfClassroomActionPerformed(evt);
@@ -127,6 +213,7 @@ public class TimetableCrud extends javax.swing.JFrame {
 
         jLabel12.setText("Id administrateur : ");
 
+        idOfAdmin.setEditable(false);
         idOfAdmin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 idOfAdminActionPerformed(evt);
@@ -141,52 +228,65 @@ public class TimetableCrud extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(71, 71, 71)
+                        .addComponent(addButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(3, 3, 3))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel11)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel12)
-                            .addComponent(jLabel10))
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(8, 8, 8))
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(77, 77, 77))
+                            .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(66, 66, 66)))
                         .addGap(41, 41, 41)))
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(editButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
-                        .addComponent(deleteButton))
-                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(idOfAdmin, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(idOfClassroom, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(nameOfTimetable, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(validityOfTimetable, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)))
-                .addContainerGap(61, Short.MAX_VALUE))
+                        .addComponent(deleteButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(idOfClassroom, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(nameOfTimetable, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(validityOfTimetable, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(idOfAdmin))
+                        .addGap(16, 16, 16)))
+                .addGap(61, 61, 61))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(39, 39, 39)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nameOfTimetable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(nameOfTimetable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(41, 41, 41)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(validityOfTimetable, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(validityOfTimetable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel11)
-                    .addComponent(idOfClassroom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(idOfClassroom, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(idOfAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(idOfAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(84, 84, 84)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(addButton)
+                    .addComponent(editButton)
+                    .addComponent(deleteButton))
                 .addGap(40, 40, 40))
         );
 
@@ -195,14 +295,14 @@ public class TimetableCrud extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id", "nom", "validité", "administrateur"
+                "Id", "nom", "validité", "salle", "administrateur"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -211,6 +311,11 @@ public class TimetableCrud extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(jTable1);
@@ -222,53 +327,218 @@ public class TimetableCrud extends javax.swing.JFrame {
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 501, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    Connection con1;
+    PreparedStatement insert;
+    
+    //fonction qui met a jour le tableau d'affichage des emplois de temps crees de notre fenetre
+    private void update_table(){
+       int c;
+       
+       try {
+         Class.forName("com.mysql.cj.jdbc.Driver");
+           con1 = DriverManager.getConnection("jdbc:mysql://localhost/TT_MANAGEMENT","root","");
+            insert = con1.prepareStatement("select * FROM Emplois_de_temps");
+            ResultSet rs = insert.executeQuery();
+            ResultSetMetaData rss = rs.getMetaData();
+            c=rss.getColumnCount();
+            
+            DefaultTableModel Df = (DefaultTableModel)jTable1.getModel();
+            Df.setRowCount(0);
+            
+            while(rs.next()){
+                Vector v2 = new Vector();
+                
+                for(int a=1;a<=c;a++){
+                    v2.add(rs.getString("id_emplois_de_temps"));
+                    v2.add(rs.getString("nom"));
+                    v2.add(rs.getString("validité"));
+                    v2.add(rs.getString("nom_salle"));
+                    v2.add(rs.getString("id_admin"));
+                }
+                
+                Df.addRow(v2);
+            }
+            
+        } catch (ClassNotFoundException ex) {
+         Logger.getLogger(TimetableCrud.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(TimetableCrud.class.getName()).log(Level.SEVERE, null, ex);
+        }  
+    }
+    
     private void nameOfTimetableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameOfTimetableActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_nameOfTimetableActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        // TODO add your handling code here:
+        
+        //recuperation des informations saisies dans le formulaire
+        String nomE_T   =  nameOfTimetable.getText();
+        String validity =  validityOfTimetable.getText();
+        String salle    = idOfClassroom.getSelectedItem().toString();
+        int  admin      = Integer.parseInt(idOfAdmin.getText()); 
+       
+        //connection a la base de donnee et insertion des informations recuperees
+     try {
+         Class.forName("com.mysql.cj.jdbc.Driver");
+           con1 = DriverManager.getConnection("jdbc:mysql://localhost/TT_MANAGEMENT","root","");
+            insert = con1.prepareStatement("insert into Emplois_de_temps (nom,validité,nom_salle,id_admin)values(?,?,?,?)");
+            insert.setString(1, nomE_T);
+            insert.setString(2, validity);
+            insert.setString(3, salle);
+            insert.setInt(4, admin);
+            //execution des mises a jours
+            insert.executeUpdate();
+   
+            //affiche un message qui confirme l'ajout d'un emploi de temps
+            JOptionPane.showMessageDialog(this, "Emploi de temps ajouté");
+            update_table();
+
+            nameOfTimetable.setText("");
+            validityOfTimetable.setText("");
+            idOfClassroom.setSelectedItem("");
+            idOfAdmin.setText("");
+            
+            //fixe le curseur sur le champ de saisie du nom apres un enregistrement
+            nameOfTimetable.requestFocus();
+            
+            
+
+         
+     } catch (ClassNotFoundException ex) {
+         Logger.getLogger(TimetableCrud.class.getName()).log(Level.SEVERE, null, ex);
+     } catch (SQLException ex) {
+         Logger.getLogger(TimetableCrud.class.getName()).log(Level.SEVERE, null, ex);
+     }
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         // TODO add your handling code here:
+        DefaultTableModel Df = (DefaultTableModel)jTable1.getModel();
+        int selectedIndex = jTable1.getSelectedRow();
+        
+       
+     try {
+            int id = Integer.parseInt(Df.getValueAt(selectedIndex, 0).toString());
+            
+            String nomE_T   =  nameOfTimetable.getText();
+            String validity =  validityOfTimetable.getText();
+            String salle    = idOfClassroom.getSelectedItem().toString();
+            int  admin      = Integer.parseInt(idOfAdmin.getText()); 
+        
+        
+         Class.forName("com.mysql.cj.jdbc.Driver");
+         
+            //connection a la base de donnee et insertion des informations recuperees
+            con1 = DriverManager.getConnection("jdbc:mysql://localhost/TT_MANAGEMENT","root","");
+            insert = con1.prepareStatement("update Emplois_de_temps set nom=?,validité=?,nom_salle=?,id_admin=? where id_emplois_de_temps=? ");
+            insert.setString(1, nomE_T);
+            insert.setString(2, validity);
+            insert.setString(3, salle);
+            insert.setInt(4, admin);
+            insert.setInt(5, id);
+            
+            //execution des mises a jours
+            insert.executeUpdate();
+   
+            //affiche un message qui confirme la mise a jour d'un emploi de temps
+            JOptionPane.showMessageDialog(this, "Emploi de temps mis a jour");
+            update_table();
+
+            nameOfTimetable.setText("");
+            validityOfTimetable.setText("");
+            idOfClassroom.setSelectedItem("");
+            idOfAdmin.setText("");
+            
+            //fixe le curseur sur le champ de saisie du nom apres un enregistrement
+            nameOfTimetable.requestFocus();
+            
+            
+
+         
+     } catch (ClassNotFoundException ex) {
+         Logger.getLogger(TimetableCrud.class.getName()).log(Level.SEVERE, null, ex);
+     } catch (SQLException ex) {
+         Logger.getLogger(TimetableCrud.class.getName()).log(Level.SEVERE, null, ex);
+     }
+          
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         // TODO add your handling code here:
+        
+        DefaultTableModel Df = (DefaultTableModel)jTable1.getModel();
+        int selectedIndex = jTable1.getSelectedRow();
+        
+     try {
+            int id = Integer.parseInt(Df.getValueAt(selectedIndex, 0).toString());
+            
+            int dialogResult = JOptionPane.showConfirmDialog(null, "Voulez-vous supprimer cet emploi de temps?","erreur",JOptionPane.YES_NO_OPTION);
+        
+            if(dialogResult == JOptionPane.YES_OPTION){
+                Class.forName("com.mysql.cj.jdbc.Driver");
+         
+            //connection a la base de donnee et suppression des informations correspondantes a l'id
+            con1 = DriverManager.getConnection("jdbc:mysql://localhost/TT_MANAGEMENT","root","");
+            insert = con1.prepareStatement("delete FROM Emplois_de_temps where id_emplois_de_temps=? ");
+           
+            insert.setInt(1, id);
+            
+            //execution des mises a jours
+            insert.executeUpdate();
+   
+            //affiche un message qui confirme la suppression d'un emploi de temps
+            JOptionPane.showMessageDialog(this, "Emploi de temps supprimé avec succes");
+            update_table();
+            
+            nameOfTimetable.setText("");
+            validityOfTimetable.setText("");
+            idOfClassroom.setSelectedItem("");
+            idOfAdmin.setText("");
+            
+            //fixe le curseur sur le champ de saisie du nom apres un enregistrement
+            nameOfTimetable.requestFocus();
+            }
+            
+     } catch (ClassNotFoundException ex) {
+         Logger.getLogger(TimetableCrud.class.getName()).log(Level.SEVERE, null, ex);
+     } catch (SQLException ex) {
+         Logger.getLogger(TimetableCrud.class.getName()).log(Level.SEVERE, null, ex);
+     }
+         
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void validityOfTimetableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_validityOfTimetableActionPerformed
@@ -281,8 +551,48 @@ public class TimetableCrud extends javax.swing.JFrame {
 
     private void idOfAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idOfAdminActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_idOfAdminActionPerformed
 
+    //fonction permettant de recuperer les donnees de la ligne du tableau selectionnee
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+
+        
+        DefaultTableModel Df = (DefaultTableModel)jTable1.getModel();
+        int selectedIndex = jTable1.getSelectedRow();
+        
+        nameOfTimetable.setText(Df.getValueAt(selectedIndex, 1).toString());
+        validityOfTimetable.setText(Df.getValueAt(selectedIndex, 2).toString());
+        idOfClassroom.setSelectedItem(Df.getValueAt(selectedIndex, 3).toString());
+        idOfAdmin.setText(Df.getValueAt(selectedIndex, 4).toString());
+        
+        
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jLabel13MouseClicked
+
+    //fonction permettant de creer la liste deroulante des salles
+    private void Update_idOfClassroom(){
+        String sql = "select * FROM Salle"; 
+        
+        try{
+         Class.forName("com.mysql.cj.jdbc.Driver");
+         con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/TT_MANAGEMENT", "root", "");
+         insert = con1.prepareStatement(sql);
+         ResultSet rs = insert.executeQuery();
+         
+         while(rs.next()){
+             idOfClassroom.addItem(rs.getString("nom_salle"));
+         }
+        }
+        
+        catch(ClassNotFoundException | SQLException ex){
+            Logger.getLogger(TimetableCrud.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -318,20 +628,25 @@ public class TimetableCrud extends javax.swing.JFrame {
             }
         });
     }
-
+    
+    // Variable personelles
+    private Vector sharedData;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
     private javax.swing.JButton deleteButton;
     private javax.swing.JButton editButton;
     private javax.swing.JTextField idOfAdmin;
     private javax.swing.JComboBox<String> idOfClassroom;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;

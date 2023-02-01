@@ -4,6 +4,21 @@
  */
 package Enseignant;
 
+
+//import com.mysql.jdbc.ResultSetMetaData;
+import java.awt.Image;
+import java.sql.PreparedStatement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import java.sql.ResultSet;
+import java.util.Vector;
+import javax.swing.ImageIcon;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author sudo_dev
@@ -15,6 +30,8 @@ public class TeachersCrud extends javax.swing.JFrame {
      */
     public TeachersCrud() {
         initComponents();
+        tableUpdate();
+        scaleImage();
     }
 
     /**
@@ -28,7 +45,10 @@ public class TeachersCrud extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         username = new javax.swing.JTextField();
@@ -39,35 +59,78 @@ public class TeachersCrud extends javax.swing.JFrame {
         addButton = new javax.swing.JButton();
         editButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
-        jLabel11 = new javax.swing.JLabel();
-        status = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
         jPanel2.setBackground(new java.awt.Color(51, 51, 255));
 
-        jLabel1.setFont(new java.awt.Font("Liberation Sans", 1, 20)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("TT_MANAGEMENT");
+        jPanel3.setBackground(new java.awt.Color(51, 51, 255));
+
+        jLabel2.setFont(new java.awt.Font("Liberation Sans", 1, 20)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("TT_MANAGEMENT");
+
+        jPanel4.setBackground(new java.awt.Color(37, 41, 203));
+
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel11.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel11.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel11MouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(7, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(156, 156, 156))
+            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -107,7 +170,7 @@ public class TeachersCrud extends javax.swing.JFrame {
 
         editButton.setFont(new java.awt.Font("Liberation Sans", 1, 15)); // NOI18N
         editButton.setText("Modifier");
-        editButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        editButton.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         editButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editButtonActionPerformed(evt);
@@ -117,20 +180,10 @@ public class TeachersCrud extends javax.swing.JFrame {
         deleteButton.setFont(new java.awt.Font("Liberation Sans", 1, 15)); // NOI18N
         deleteButton.setForeground(new java.awt.Color(255, 0, 0));
         deleteButton.setText("Supprimer");
-        deleteButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        deleteButton.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         deleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteButtonActionPerformed(evt);
-            }
-        });
-
-        jLabel11.setText("Statut :");
-
-        status.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Assistant", "Docteur", "Proffesseur" }));
-        status.setToolTipText("");
-        status.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                statusActionPerformed(evt);
             }
         });
 
@@ -149,14 +202,12 @@ public class TeachersCrud extends javax.swing.JFrame {
                             .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(24, 24, 24))
-                            .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(24, 24, 24)))
                         .addGap(52, 52, 52)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(password, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
                             .addComponent(username)
-                            .addComponent(speciality)
-                            .addComponent(status, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(speciality)))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel5Layout.createSequentialGroup()
                         .addGap(42, 42, 42)
                         .addComponent(addButton, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
@@ -178,15 +229,11 @@ public class TeachersCrud extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
-                .addGap(30, 30, 30)
+                .addGap(52, 52, 52)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel10)
                     .addComponent(speciality, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel11)
-                    .addComponent(status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -199,22 +246,12 @@ public class TeachersCrud extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id", "nom", "mot de passe", "spécialité", "statut"
+                "Id", "nom", "mot de passe", "spécialité"
             }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+        ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(jTable1);
@@ -256,9 +293,16 @@ public class TeachersCrud extends javax.swing.JFrame {
         );
 
         pack();
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    public void scaleImage() {
+        ImageIcon icon = new ImageIcon("/home/sudo_dev/Bureau/Projets_ecole/3055/TP/TT_MANAGEMENT/src/Icons/close.png");
+        Image img = icon.getImage();
+        Image imgScale = img.getScaledInstance(jLabel11.getWidth(), jLabel11.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(imgScale);
+        jLabel11.setIcon(scaledIcon);
+    }
+    
     private void passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_passwordActionPerformed
@@ -271,21 +315,185 @@ public class TeachersCrud extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_specialityActionPerformed
 
+              Connection con1 ;
+        PreparedStatement insert ;
+        
+        private void tableUpdate(){
+         int c;
+         
+          try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con1=DriverManager.getConnection("jdbc:mysql://localhost:3306/TT_MANAGEMENT","root","");
+            insert=con1.prepareStatement("select * from Enseignant");
+            ResultSet rs =insert.executeQuery();
+            
+             java.sql.ResultSetMetaData Res=rs.getMetaData();
+            
+            c=Res.getColumnCount();
+            DefaultTableModel Df= (DefaultTableModel)jTable1.getModel();
+            Df.setRowCount(0);
+            while(rs.next()){
+             
+                Vector v2=new Vector();
+                
+                for(int a=1;a<=c;a++){
+                    v2.add(rs.getString("id_enseignant"));
+                    v2.add(rs.getString("nom"));
+                    v2.add(rs.getString("mot_de_passe"));
+                    v2.add(rs.getString("specialite"));
+                    
+                }
+                
+                Df.addRow(v2);
+                
+            }
+          
+            
+           
+            
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Salle.SallesCrud.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+         
+         
+        
+        }
+        
+        
+        
+        
+    
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
+        String teacherName=username.getText();
+        String teacherPassword=password.getText();
+        String teacherSpeciality=speciality.getText();
+        
+         try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con1=DriverManager.getConnection("jdbc:mysql://localhost:3306/TT_MANAGEMENT","root","");
+            insert=con1.prepareStatement("insert into Enseignant(nom,mot_de_passe,specialite)values(?,?,?) ");
+            insert.setString(1, teacherName);
+            insert.setString(2,teacherPassword );
+            insert.setString(3,teacherSpeciality);
+            insert.executeUpdate();
+            
+            JOptionPane.showMessageDialog(this,"L'enseignant a ete enregistrer avec success");
+            tableUpdate();
+             username.setText(" ");
+            password.setText(" ");
+            speciality.setText(" ");
+            
+            username.requestFocus();
+            
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Salle.SallesCrud.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         // TODO add your handling code here:
+        
+    
+          DefaultTableModel Df= (DefaultTableModel)jTable1.getModel();
+          int selectedIndex=jTable1.getSelectedRow();
+          
+                      
+           try {
+               
+               int id=Integer.parseInt(Df.getValueAt(selectedIndex,0).toString());
+                String teacherName=username.getText();
+                String teacherPassword=password.getText();
+                String teacherSpeciality=speciality.getText();
+               
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con1=DriverManager.getConnection("jdbc:mysql://localhost:3306/TT_MANAGEMENT","root","");
+            insert=con1.prepareStatement("update Enseignant set nom=?,mot_de_passe=?,specialite=? where id_enseignant=? ");
+            insert.setString(1, teacherName);
+            insert.setString(2,teacherPassword );
+            insert.setString(3,teacherSpeciality);
+             insert.setInt(4,id);
+            insert.executeUpdate();
+            
+            JOptionPane.showMessageDialog(this,"Les informations de l'enseignant ont ete mis a jours");
+            tableUpdate();
+             username.setText(" ");
+            password.setText(" ");
+            speciality.setText(" ");
+            
+            username.requestFocus();
+            
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Salle.SallesCrud.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+          
+          
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         // TODO add your handling code here:
+        DefaultTableModel Df= (DefaultTableModel)jTable1.getModel();
+          int selectedIndex=jTable1.getSelectedRow();
+          
+           try {
+               
+               int id=Integer.parseInt(Df.getValueAt(selectedIndex,0).toString());
+               
+               int dialogResult=JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer cet enseignant ?","Attention",JOptionPane.YES_NO_OPTION);
+               
+               if(dialogResult==JOptionPane.YES_OPTION){
+                   
+                   Class.forName("com.mysql.cj.jdbc.Driver");
+            con1=DriverManager.getConnection("jdbc:mysql://localhost:3306/TT_MANAGEMENT","root","");
+            insert=con1.prepareStatement("delete from Enseignant where id_enseignant=? ");
+            
+             insert.setInt(1,id);
+            insert.executeUpdate();
+            
+            
+            JOptionPane.showMessageDialog(this,"Les informations de cet enseignant ont ete supprimer");
+            tableUpdate();
+             username.setText(" ");
+            password.setText(" ");
+            speciality.setText(" ");
+            
+            username.requestFocus();
+            
+               }
+               
+                
+               
+            
+            
+            
+            
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Salle.SallesCrud.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+          
+        
     }//GEN-LAST:event_deleteButtonActionPerformed
 
-    private void statusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusActionPerformed
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_statusActionPerformed
+         DefaultTableModel Df= (DefaultTableModel)jTable1.getModel();
+         int selectedIndex=jTable1.getSelectedRow();
+         
+         username.setText(Df.getValueAt(selectedIndex,1).toString());
+         password.setText(Df.getValueAt(selectedIndex,2).toString());
+         speciality.setText(Df.getValueAt(selectedIndex,3).toString());
+        
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jLabel11MouseClicked
 
     /**
      * @param args the command line arguments
@@ -329,19 +537,20 @@ public class TeachersCrud extends javax.swing.JFrame {
     private javax.swing.JButton addButton;
     private javax.swing.JButton deleteButton;
     private javax.swing.JButton editButton;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField password;
     private javax.swing.JTextField speciality;
-    private javax.swing.JComboBox<String> status;
     private javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
 }

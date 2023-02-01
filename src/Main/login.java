@@ -208,9 +208,9 @@ public class login extends javax.swing.JFrame {
                 data.add(rs.getString("specialite"));
                 data.add(rs.getString("grade"));
                 
-                System.out.println(data);
+                // System.out.println(data);
                 
-                Home home = new Home();
+                Home home = new Home(data);
                 home.setVisible(true);
                 
                 this.dispose();
